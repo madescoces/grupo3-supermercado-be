@@ -26,6 +26,7 @@ dependencies {
 
     // básicos de cualquier proyecto Spring Boot
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -40,11 +41,13 @@ dependencies {
 
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     implementation ("com.google.code.gson:gson:2.10.1")
-    implementation("org.uqbar-project:geodds-xtend:1.0.3")
+
+    // Database Connection
+    runtimeOnly("com.mysql:mysql-connector-j")
 
     // testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.mockk:mockk:1.12.8")
+    testImplementation("io.mockk:mockk:1.13.4")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 }
