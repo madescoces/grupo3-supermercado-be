@@ -6,3 +6,5 @@ import java.lang.RuntimeException
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 class NotFoundException(msg: String) : RuntimeException(msg)
+
+class BusinessException(msg: String) : RuntimeException(msg)
