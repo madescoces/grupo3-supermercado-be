@@ -14,3 +14,8 @@ data class Repositor( val nombre:String = "" ) {
 
     )
 }
+
+data class RepositorDTO(
+    val id: Int,
+    val name: String
+)
