@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 interface ISectorService {
-  fun getAll(): List<Sector>
+  fun getAll(): List<SectorDTO>
   fun getById(idSector:Int):Sector
   fun create(sector: Sector):Sector
   fun delete(idSector: Int)
@@ -24,10 +24,8 @@ class SectorService : ISectorService{
   @Throws(BusinessException::class)
   override fun getAll(): List<Sector> {
     try {
-      val sectores = sectorRepository!!.findAll()
-      println(sectores)
-      return sectores
-    } catch(e:Exception){
+      return sectorRepository!!.findAll().map { sector -> sector.toDTO() }
+    } catch (e: Exception) {
       throw BusinessException(e.message!!)
     }
   }

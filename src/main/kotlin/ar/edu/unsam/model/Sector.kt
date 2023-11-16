@@ -8,4 +8,9 @@ data class Sector( val descSector:String = "" ) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   var idSector:Int = 0
+
+  fun toDTO() = SectorDTO(
+    id = this.idSector,
+    desc = this.descSector
+  )
 }
