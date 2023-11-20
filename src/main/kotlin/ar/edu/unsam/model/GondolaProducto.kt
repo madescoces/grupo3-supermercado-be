@@ -1,47 +1,41 @@
-package ar.edu.unsam.ar.edu.unsam.model
+package ar.edu.unsam.model
 
-import ar.edu.unsam.model.Gondola
-import ar.edu.unsam.model.Presentacion
-import ar.edu.unsam.model.Producto
 import jakarta.persistence.*
 import java.io.Serializable
 
 @Entity
 @Table(name = "gondola_producto")
-@IdClass(GondolaProductoId::class)
 data class GondolaProducto(
+  @EmbeddedId
+  val id: GondolaProductoId,
+
+  @MapsId("id_gondola")
   @ManyToOne
-  @JoinColumn(name = "gondola_id", insertable = false, updatable = false)
-  @Id
-  val gondola: Gondola,
+  @JoinColumn(name = "id_gondola")
+  val gondola:Gondola,
+
+  @MapsId("id_producto")
+  @ManyToOne
+  @JoinColumn(name = "id_producto")
+  val producto:Producto,
 
   @ManyToOne
-  @JoinColumn(name = "producto_id", insertable = false, updatable = false)
-  @Id
-  val producto: Producto,
-
-  @ManyToOne
-  @JoinColumn(name = "presentacion_id")
+  @JoinColumn(name = "id_presentacion")
   val presentacion: Presentacion
   ){
-  fun toDTO() = GondolaProductoDTO(
-    sectorId = gondola.idSector,
+  fun toDTO() = SectorDataDTO(
+    sectorId = gondola.sector.idSector,
     productoId = producto.idProducto,
     productoNombre = producto.nombre,
     gondolaNombre = gondola.nombre,
-    presentacionDesc = presentacion.desc,
+    presentacionDesc = presentacion.descPresentacion,
   )
 }
 
+@Embeddable
 data class GondolaProductoId(
-  val gondola: Long,
-  val producto: Long
+  @Column(name = "id_gondola")
+  val idGondola: Long,
+  @Column(name = "id_producto")
+  val idProducto: Long
 ) : Serializable
-
-data class GondolaProductoDTO(
-  val sectorId: Int,
-  val productoId: Int,
-  val productoNombre: String,
-  val gondolaNombre: String,
-  val presentacionDesc: String,
-)

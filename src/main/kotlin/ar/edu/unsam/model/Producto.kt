@@ -4,20 +4,31 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "producto")
-data class Producto ( val nombre:String = "", val desc: String = ""){
+data class Producto (
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  var idProducto:Int = 0
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  var idProducto:Long,
+  val nombre:String,
+  val descProducto: String,
 
+  @ManyToOne
+  @JoinColumn(name="id_fila")
+  val fila: Fila,
+  val idProductoReemplazo: Long
+){
   fun toDTO() = ProductoDTO(
-    id = idProducto,
-    name = nombre,
-    desc = desc
+    id = this.idProducto,
+    name = this.nombre,
+    desc = this.descProducto,
+    fila = this.fila.idFila,
+    idReemplazo = this.idProductoReemplazo
   )
 }
 
 data class ProductoDTO(
-  val id: Int,
+  val id: Long,
   val name: String,
-  val desc: String
+  val desc: String,
+  val fila: Long,
+  val idReemplazo: Long
 )

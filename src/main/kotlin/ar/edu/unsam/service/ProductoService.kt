@@ -1,12 +1,13 @@
 package ar.edu.unsam.service
 
-import ar.edu.unsam.ar.edu.unsam.model.GondolaProductoDTO
 import ar.edu.unsam.data.ERROR_ID_NOT_FOUND
 import ar.edu.unsam.errors.BusinessException
 import ar.edu.unsam.errors.NotFoundException
 import ar.edu.unsam.model.Producto
 import ar.edu.unsam.model.ProductoDTO
-import ar.edu.unsam.model.Repositor
+import ar.edu.unsam.model.RepositorDataDTO
+import ar.edu.unsam.model.SectorDataDTO
+import ar.edu.unsam.repository.GondolaProductoRepositorRepository
 import ar.edu.unsam.repository.GondolaProductoRepository
 import ar.edu.unsam.repository.ProductoRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,10 +16,11 @@ import java.util.*
 
 interface IProductoService {
   fun getAll(): List<ProductoDTO>
-  fun getById(idProducto:Int):Producto
-  fun getBySector(idSector:Int): List<GondolaProductoDTO>
+  fun getById(idProducto:Long):Producto
+  fun getBySector(idSector:Long): List<SectorDataDTO>
+  fun getByRepositor(idRepositor: Long): List<RepositorDataDTO>
   fun create(producto: Producto): Producto
-  fun delete(idProducto: Int)
+  fun delete(idProducto: Long)
 }
 
 @Service
@@ -28,6 +30,9 @@ class ProductoService : IProductoService{
 
   @Autowired
   val gondolaProductoRepository: GondolaProductoRepository? = null
+
+  @Autowired
+  val gondolaProductoRepositorRepository: GondolaProductoRepositorRepository? = null
 
   @Throws(BusinessException::class)
   override fun getAll(): List<ProductoDTO> {
@@ -39,7 +44,7 @@ class ProductoService : IProductoService{
   }
 
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun getById(idProducto: Int):Producto{
+  override fun getById(idProducto: Long):Producto{
     val op: Optional<Producto>
     try {
       op = productoRepository!!.findById(idProducto)
@@ -54,10 +59,21 @@ class ProductoService : IProductoService{
   }
 
   @Throws(BusinessException::class)
-  override fun getBySector(idSector: Int): List<GondolaProductoDTO> {
+  override fun getBySector(idSector: Long): List<SectorDataDTO> {
     try {
       val lista = gondolaProductoRepository!!.findAll().map { elemento -> elemento.toDTO() }
       return lista.filter { it.sectorId == idSector }
+    } catch (e: Exception) {
+      throw BusinessException(e.message!!)
+    }
+  }
+
+  @Throws(BusinessException::class)
+  override fun getByRepositor(idRepositor: Long): List<RepositorDataDTO> {
+    try {
+      val lista = gondolaProductoRepositorRepository!!.findAll().map { elemento -> elemento.toDTO() }
+      println(lista)
+      return lista.filter { it.repositorId == idRepositor }
     } catch (e: Exception) {
       throw BusinessException(e.message!!)
     }
@@ -72,7 +88,7 @@ class ProductoService : IProductoService{
     }
   }
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun delete(idProducto: Int) {
+  override fun delete(idProducto: Long) {
     val op: Optional<Producto>
     try {
       op = productoRepository!!.findById(idProducto)

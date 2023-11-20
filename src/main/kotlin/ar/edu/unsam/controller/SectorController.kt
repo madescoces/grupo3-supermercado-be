@@ -30,7 +30,7 @@ class SectorController {
   }
 
   @GetMapping("/{id}")
-  fun getByID(@PathVariable("id") idSector:Int): ResponseEntity<Sector>{
+  fun getByID(@PathVariable("id") idSector:Long): ResponseEntity<Sector>{
     return try{
       ResponseEntity(sectorService!!.getById(idSector), HttpStatus.OK)
     } catch (e:Exception){
@@ -41,7 +41,7 @@ class SectorController {
   }
 
   @PostMapping
-  fun create (@RequestBody sector:Sector): ResponseEntity<Any>{
+  fun create (@RequestBody sector:Sector): ResponseEntity<Sector>{
     return try{
       sectorService!!.create(sector)
       val responseHeader = HttpHeaders()
@@ -53,7 +53,7 @@ class SectorController {
   }
 
   @PutMapping
-  fun update (@RequestBody sector:Sector): ResponseEntity<Any>{
+  fun update (@RequestBody sector:Sector): ResponseEntity<Sector>{
     return try{
       sectorService!!.create(sector)
       ResponseEntity(HttpStatus.OK)
@@ -63,7 +63,7 @@ class SectorController {
   }
 
   @DeleteMapping("/{id}")
-  fun delete(@PathVariable("id") idSector:Int): ResponseEntity<Sector>{
+  fun delete(@PathVariable("id") idSector:Long): ResponseEntity<Sector>{
     return try{
       sectorService!!.delete(idSector)
       ResponseEntity(HttpStatus.OK)

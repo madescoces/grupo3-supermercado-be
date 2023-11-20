@@ -4,18 +4,19 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "presentacion")
-data class Presentacion (val desc:String = "") {
+data class Presentacion (
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  var idPresentacion:Int = 0
-
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  var idPresentacion:Long,
+  val descPresentacion:String = ""
+) {
   fun toDTO() = PresentacionDTO(
-    id = idPresentacion,
-    desc = desc
+    id = this.idPresentacion,
+    desc = this.descPresentacion
   )
 }
 
 data class PresentacionDTO(
-  val id: Int,
+  val id: Long,
   val desc: String
 )

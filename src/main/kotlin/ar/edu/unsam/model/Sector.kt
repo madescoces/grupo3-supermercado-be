@@ -4,11 +4,12 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "sector")
-data class Sector( val descSector:String = "" ) {
+data class Sector(
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  var idSector:Int = 0
-
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  var idSector:Long,
+  val descSector:String
+) {
   fun toDTO() = SectorDTO(
     id = this.idSector,
     name = this.descSector
@@ -16,6 +17,6 @@ data class Sector( val descSector:String = "" ) {
 }
 
 data class SectorDTO(
-  val id: Int,
+  val id: Long,
   val name: String
 )

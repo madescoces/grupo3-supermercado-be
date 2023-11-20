@@ -12,9 +12,9 @@ import java.util.*
 
 interface ISectorService {
   fun getAll(): List<SectorDTO>
-  fun getById(idSector:Int):Sector
+  fun getById(idSector:Long):Sector
   fun create(sector: Sector):Sector
-  fun delete(idSector: Int)
+  fun delete(idSector: Long)
 }
 
 @Service
@@ -32,7 +32,7 @@ class SectorService : ISectorService{
   }
 
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun getById(idSector:Int):Sector{
+  override fun getById(idSector:Long):Sector{
     val op: Optional<Sector>
     try {
       op = sectorRepository!!.findById(idSector)
@@ -55,7 +55,7 @@ class SectorService : ISectorService{
     }
   }
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun delete(idSector: Int) {
+  override fun delete(idSector: Long) {
     val op: Optional<Sector>
     try {
       op = sectorRepository!!.findById(idSector)

@@ -5,24 +5,25 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "gondola")
 data class Gondola (
-  val nombre:String = "",
-  val idSector:Int = 0
-){
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  var idGondola:Int = 0
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  var idGondola:Long,
 
-  fun perteneceASector() = idSector
+  val nombre:String = "",
 
+  @ManyToOne
+  @JoinColumn(name="id_sector")
+  val sector:Sector
+){
   fun toDTO() = GondolaDTO(
     id = idGondola,
     name = nombre,
-    idSector = idSector
+    idSector = sector.idSector
   )
 }
 
 data class GondolaDTO(
-  val id: Int,
+  val id: Long,
   val name: String,
-  val idSector: Int
+  val idSector: Long
 )

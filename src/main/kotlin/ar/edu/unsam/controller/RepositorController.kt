@@ -30,7 +30,7 @@ class RepositorController {
   }
 
   @GetMapping("/{id}")
-  fun getByID(@PathVariable("id") idRepositor:Int): ResponseEntity<Repositor>{
+  fun getByID(@PathVariable("id") idRepositor:Long): ResponseEntity<Repositor>{
     return try{
       ResponseEntity(repositorService!!.getById(idRepositor), HttpStatus.OK)
     } catch (e:Exception){
@@ -63,7 +63,7 @@ class RepositorController {
   }
 
   @DeleteMapping("/{id}")
-  fun delete(@PathVariable("id") idRepositor:Int): ResponseEntity<Repositor>{
+  fun delete(@PathVariable("id") idRepositor:Long): ResponseEntity<Repositor>{
     return try{
       repositorService!!.delete(idRepositor)
       ResponseEntity(HttpStatus.OK)

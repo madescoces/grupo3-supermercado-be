@@ -12,7 +12,7 @@ import java.util.*
 
 interface IGondolaService {
   fun getAll(): List<GondolaDTO>
-  fun getById(idGondola:Int):Gondola
+  fun getById(idGondola:Long):Gondola
 }
 
 @Service
@@ -30,7 +30,7 @@ class GondolaService : IGondolaService{
   }
 
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun getById(idGondola: Int):Gondola{
+  override fun getById(idGondola: Long):Gondola{
     val op: Optional<Gondola>
     try {
       op = gondolaRepository!!.findById(idGondola)

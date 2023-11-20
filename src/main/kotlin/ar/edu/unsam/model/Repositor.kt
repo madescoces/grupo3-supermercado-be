@@ -1,20 +1,28 @@
 package ar.edu.unsam.model
+
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "Repositor")
-data class Repositor( val nombre:String = "" ) {
+@Table(name = "repositor")
+data class Repositor(
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  var idRepositor:Int = 0
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val idRepositor:Long,
+  val nombre:String,
 
+  @ManyToOne
+  @JoinColumn(name = "id_empresa")
+  val empresa: Empresa
+) {
   fun toDTO() = RepositorDTO(
     id = this.idRepositor,
-    name = this.nombre
+    name = this.nombre,
+    empresa = this.empresa.razonSocial
   )
 }
 
 data class RepositorDTO(
-  val id: Int,
-  val name: String
+  val id: Long,
+  val name: String,
+  val empresa: String
 )
