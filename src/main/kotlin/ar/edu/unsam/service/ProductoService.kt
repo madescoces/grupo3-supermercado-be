@@ -16,11 +16,11 @@ import java.util.*
 
 interface IProductoService {
   fun getAll(): List<ProductoDTO>
-  fun getById(idProducto:Long):Producto
-  fun getBySector(idSector:Long): List<SectorDataDTO>
-  fun getByRepositor(idRepositor: Long): List<RepositorDataDTO>
+  fun getById(idProducto:Int):Producto
+  fun getBySector(idSector:Int): List<SectorDataDTO>
+  fun getByRepositor(idRepositor: Int): List<RepositorDataDTO>
   fun create(producto: Producto): Producto
-  fun delete(idProducto: Long)
+  fun delete(idProducto: Int)
 }
 
 @Service
@@ -44,7 +44,7 @@ class ProductoService : IProductoService{
   }
 
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun getById(idProducto: Long):Producto{
+  override fun getById(idProducto: Int):Producto{
     val op: Optional<Producto>
     try {
       op = productoRepository!!.findById(idProducto)
@@ -59,21 +59,18 @@ class ProductoService : IProductoService{
   }
 
   @Throws(BusinessException::class)
-  override fun getBySector(idSector: Long): List<SectorDataDTO> {
+  override fun getBySector(idSector: Int): List<SectorDataDTO> {
     try {
-      val lista = gondolaProductoRepository!!.findAll().map { elemento -> elemento.toDTO() }
-      return lista.filter { it.sectorId == idSector }
+      return gondolaProductoRepository!!.getProductoBySector(idSector)
     } catch (e: Exception) {
       throw BusinessException(e.message!!)
     }
   }
 
   @Throws(BusinessException::class)
-  override fun getByRepositor(idRepositor: Long): List<RepositorDataDTO> {
+  override fun getByRepositor(idRepositor: Int): List<RepositorDataDTO> {
     try {
-      val lista = gondolaProductoRepositorRepository!!.findAll().map { elemento -> elemento.toDTO() }
-      println(lista)
-      return lista.filter { it.repositorId == idRepositor }
+      return gondolaProductoRepositorRepository!!.getProductoByRepositor(idRepositor)
     } catch (e: Exception) {
       throw BusinessException(e.message!!)
     }
@@ -87,8 +84,9 @@ class ProductoService : IProductoService{
       throw BusinessException(e.message!!)
     }
   }
+
   @Throws(BusinessException::class, NotFoundException::class)
-  override fun delete(idProducto: Long) {
+  override fun delete(idProducto: Int) {
     val op: Optional<Producto>
     try {
       op = productoRepository!!.findById(idProducto)

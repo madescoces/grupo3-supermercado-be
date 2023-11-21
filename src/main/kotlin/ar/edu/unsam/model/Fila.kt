@@ -7,9 +7,11 @@ import jakarta.persistence.*
 data class Fila(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var idFila:Long,
-  val descFila:String = ""
+  var idFila:Int = -1,
+  val descFila:String
 ) {
+  @OneToMany(mappedBy = "fila")
+  var productos: List<Producto> = listOf()
   fun toDTO() = FilaDTO(
     id = this.idFila,
     name = this.descFila
@@ -17,6 +19,6 @@ data class Fila(
 }
 
 data class FilaDTO(
-  val id: Long,
+  val id: Int,
   val name: String
 )

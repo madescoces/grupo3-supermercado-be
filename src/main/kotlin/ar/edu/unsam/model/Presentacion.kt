@@ -7,9 +7,12 @@ import jakarta.persistence.*
 data class Presentacion (
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var idPresentacion:Long,
+  val idPresentacion:Int = -1,
   val descPresentacion:String = ""
 ) {
+  @OneToMany(mappedBy = "presentacion")
+  val godonlaProducto:List<GondolaProducto> = listOf()
+
   fun toDTO() = PresentacionDTO(
     id = this.idPresentacion,
     desc = this.descPresentacion
@@ -17,6 +20,6 @@ data class Presentacion (
 }
 
 data class PresentacionDTO(
-  val id: Long,
+  val id: Int,
   val desc: String
 )

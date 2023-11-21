@@ -5,37 +5,46 @@ import java.io.Serializable
 
 @Entity
 @Table(name = "gondola_producto")
+@IdClass(GondolaProductoId::class)
 data class GondolaProducto(
-  @EmbeddedId
-  val id: GondolaProductoId,
+  @Id
+  @Column(name = "id_gondola", insertable = false, updatable = false)
+  val idGondola: Int = -1,
 
-  @MapsId("id_gondola")
-  @ManyToOne
-  @JoinColumn(name = "id_gondola")
-  val gondola:Gondola,
+  @Id
+  @Column(name = "id_producto", insertable = false, updatable = false)
+  val idProducto: Int = -1,
 
-  @MapsId("id_producto")
-  @ManyToOne
-  @JoinColumn(name = "id_producto")
-  val producto:Producto,
+  @Id
+  @Column(name = "id_presentacion", insertable = false, updatable = false)
+  val idPresentacion: Int = -1,
 
   @ManyToOne
-  @JoinColumn(name = "id_presentacion")
-  val presentacion: Presentacion
-  ){
+  @JoinColumn(name = "id_gondola", insertable = false, updatable = false)
+  val gondola: Gondola,
+
+  @ManyToOne
+  @JoinColumn(name = "id_producto", insertable = false, updatable = false)
+  val producto: Producto,
+
+  @ManyToOne
+  @JoinColumn(name = "id_presentacion", insertable = false, updatable = false)
+  val presentacion: Presentacion,
+
+  @OneToMany(mappedBy = "gondolaProducto") // Corregir el nombre del atributo
+  val gondolaProductoRepositor: List<GondolaProductoRepositor> = listOf()
+) {
   fun toDTO() = SectorDataDTO(
     sectorId = gondola.sector.idSector,
     productoId = producto.idProducto,
-    productoNombre = producto.nombre,
-    gondolaNombre = gondola.nombre,
+    productoNombre = producto.nombreProducto,
+    gondolaNombre = gondola.nombreGondola,
     presentacionDesc = presentacion.descPresentacion,
   )
 }
 
-@Embeddable
 data class GondolaProductoId(
-  @Column(name = "id_gondola")
-  val idGondola: Long,
-  @Column(name = "id_producto")
-  val idProducto: Long
+  val idGondola: Int = -1,
+  val idProducto: Int = -1
 ) : Serializable
+

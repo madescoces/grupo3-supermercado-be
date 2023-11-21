@@ -25,15 +25,17 @@ class RepositorController {
     return try{
       ResponseEntity(repositorService!!.getAll(), HttpStatus.OK)
     } catch (e:Exception){
+      e.printStackTrace()
       ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @GetMapping("/{id}")
-  fun getByID(@PathVariable("id") idRepositor:Long): ResponseEntity<Repositor>{
+  fun getByID(@PathVariable("id") idRepositor:Int): ResponseEntity<Repositor>{
     return try{
       ResponseEntity(repositorService!!.getById(idRepositor), HttpStatus.OK)
     } catch (e:Exception){
+      e.printStackTrace()
       ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
     } catch (e:NotFoundException) {
       ResponseEntity(HttpStatus.NOT_FOUND)
@@ -48,6 +50,7 @@ class RepositorController {
       responseHeader.set("location","/repositores" + "/" + repositor.idRepositor)
       ResponseEntity(responseHeader, HttpStatus.CREATED)
     } catch (e: BusinessException) {
+      e.printStackTrace()
       ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
@@ -58,16 +61,18 @@ class RepositorController {
       repositorService!!.create(repositor)
       ResponseEntity(HttpStatus.OK)
     } catch (e: BusinessException) {
+      e.printStackTrace()
       ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @DeleteMapping("/{id}")
-  fun delete(@PathVariable("id") idRepositor:Long): ResponseEntity<Repositor>{
+  fun delete(@PathVariable("id") idRepositor:Int): ResponseEntity<Repositor>{
     return try{
       repositorService!!.delete(idRepositor)
       ResponseEntity(HttpStatus.OK)
     } catch (e:Exception){
+      e.printStackTrace()
       ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
     } catch (e:NotFoundException) {
       ResponseEntity(HttpStatus.NOT_FOUND)

@@ -30,7 +30,7 @@ class SectorController {
   }
 
   @GetMapping("/{id}")
-  fun getByID(@PathVariable("id") idSector:Long): ResponseEntity<Sector>{
+  fun getByID(@PathVariable("id") idSector:Int): ResponseEntity<Sector>{
     return try{
       ResponseEntity(sectorService!!.getById(idSector), HttpStatus.OK)
     } catch (e:Exception){
@@ -63,7 +63,7 @@ class SectorController {
   }
 
   @DeleteMapping("/{id}")
-  fun delete(@PathVariable("id") idSector:Long): ResponseEntity<Sector>{
+  fun delete(@PathVariable("id") idSector:Int): ResponseEntity<Sector>{
     return try{
       sectorService!!.delete(idSector)
       ResponseEntity(HttpStatus.OK)

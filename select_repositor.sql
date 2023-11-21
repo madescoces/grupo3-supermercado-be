@@ -11,4 +11,4 @@ JOIN gondola AS GDL ON GDL.id_gondola = GPR.id_gondola
 JOIN gondola_producto AS GP ON GP.id_gondola = GDL.id_gondola
 JOIN presentacion AS PR ON GP.id_presentacion = PR.id_presentacion
 JOIN producto AS PD ON GP.id_producto = PD.id_producto
-WHERE REP.id_repositor = 2;
+WHERE REP.id_repositor = 2;id_empresarepositor_seqnext_val

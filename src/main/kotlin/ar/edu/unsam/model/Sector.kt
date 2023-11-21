@@ -7,9 +7,11 @@ import jakarta.persistence.*
 data class Sector(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  var idSector:Long,
+  var idSector:Int = -1,
   val descSector:String
 ) {
+  @OneToMany(mappedBy = "sector")
+  var gondolas: List<Gondola> = listOf()
   fun toDTO() = SectorDTO(
     id = this.idSector,
     name = this.descSector
@@ -17,6 +19,6 @@ data class Sector(
 }
 
 data class SectorDTO(
-  val id: Long,
+  val id: Int,
   val name: String
 )

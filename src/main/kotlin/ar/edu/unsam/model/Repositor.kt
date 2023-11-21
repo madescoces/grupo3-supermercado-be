@@ -7,22 +7,25 @@ import jakarta.persistence.*
 data class Repositor(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val idRepositor:Long,
-  val nombre:String,
+  val idRepositor:Int = -1,
+  val nombreRepositor:String
+) {
+  @OneToMany(mappedBy = "repositor")
+  val gondolaProductoRepositor: List<GondolaProductoRepositor> = listOf()
 
   @ManyToOne
-  @JoinColumn(name = "id_empresa")
-  val empresa: Empresa
-) {
+  @JoinColumn(name = "id_empresa", insertable = false, updatable = false)
+  lateinit var empresa: Empresa
+
   fun toDTO() = RepositorDTO(
     id = this.idRepositor,
-    name = this.nombre,
+    name = this.nombreRepositor,
     empresa = this.empresa.razonSocial
   )
 }
 
 data class RepositorDTO(
-  val id: Long,
+  val id: Int,
   val name: String,
   val empresa: String
 )

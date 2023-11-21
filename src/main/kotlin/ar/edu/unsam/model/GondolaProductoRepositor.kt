@@ -1,9 +1,9 @@
-package ar.edu.unsam.ar.edu.unsam.model
+package ar.edu.unsam.model
 
-import ar.edu.unsam.model.*
 import jakarta.persistence.*
 import java.io.Serializable
-import java.sql.Date
+import java.math.BigDecimal
+import java.sql.Timestamp
 
 @Entity
 @Table(name = "gondola_producto_repositor")
@@ -11,24 +11,27 @@ data class GondolaProductoRepositor(
   @EmbeddedId
   val id: GondolaProductoRepositorId,
 
-  @MapsId("gondolaProductoId")
   @ManyToOne
-  @JoinColumn(name = "id_gondola", referencedColumnName = "id_gondola")
-  @JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
-  val gondolaProducto:GondolaProducto,
-
-  @MapsId("id_repositor")
-  @ManyToOne
-  @JoinColumn(name = "id_repositor")
+  @JoinColumn(name = "id_repositor", referencedColumnName = "idRepositor", insertable = false, updatable = false)
   val repositor: Repositor,
-  val fecha: Date,
-  val cantidad: Float
-  ){
+
+  @ManyToOne
+  @JoinColumns(
+    JoinColumn(name = "idGondola", referencedColumnName = "id_gondola", insertable = false, updatable = false),
+    JoinColumn(name = "idProducto", referencedColumnName = "id_producto", insertable = false, updatable = false)
+  )
+  val gondolaProducto: GondolaProducto,
+
+  @Column(name = "fecha", insertable = false, updatable = false)
+  val fecha: Timestamp,
+
+  val cantidad: BigDecimal
+) {
   fun toDTO() = RepositorDataDTO(
     repositorId = repositor.idRepositor,
     productoId = gondolaProducto.producto.idProducto,
-    productoNombre = gondolaProducto.producto.nombre,
-    gondolaNombre = gondolaProducto.gondola.nombre,
+    productoNombre = gondolaProducto.producto.nombreProducto,
+    gondolaNombre = gondolaProducto.gondola.nombreGondola,
     presentacionDesc = gondolaProducto.presentacion.descPresentacion,
   )
 }
@@ -36,7 +39,8 @@ data class GondolaProductoRepositor(
 @Embeddable
 data class GondolaProductoRepositorId(
   @Embedded
-  val gondolaProductoId: GondolaProductoId,
+  val idGondolaProducto: GondolaProductoId,
+
   @Column(name = "id_repositor")
-  val idRepositor: Long
+  val idRepositor: Int = -1
 ) : Serializable

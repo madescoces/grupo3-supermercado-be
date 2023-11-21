@@ -7,10 +7,13 @@ import jakarta.persistence.*
 data class Empresa(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val idEmpresa:Long,
+  val idEmpresa:Int = -1,
   val razonSocial:String,
   val domicilio:String
 ) {
+  @OneToMany(mappedBy = "empresa")
+  var repositores: List<Repositor> = listOf()
+
   fun toDTO() = EmpresaDTO(
     id = this.idEmpresa,
     name = this.razonSocial,
@@ -19,7 +22,7 @@ data class Empresa(
 }
 
 data class EmpresaDTO(
-  val id: Long,
+  val id: Int,
   val name: String,
   val domicilio: String
 )
