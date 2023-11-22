@@ -3,10 +3,7 @@ package ar.edu.unsam.service
 import ar.edu.unsam.data.ERROR_ID_NOT_FOUND
 import ar.edu.unsam.errors.BusinessException
 import ar.edu.unsam.errors.NotFoundException
-import ar.edu.unsam.model.Producto
-import ar.edu.unsam.model.ProductoDTO
-import ar.edu.unsam.model.RepositorDataDTO
-import ar.edu.unsam.model.SectorDataDTO
+import ar.edu.unsam.model.*
 import ar.edu.unsam.repository.GondolaProductoRepositorRepository
 import ar.edu.unsam.repository.GondolaProductoRepository
 import ar.edu.unsam.repository.ProductoRepository
@@ -17,8 +14,9 @@ import java.util.*
 interface IProductoService {
   fun getAll(): List<ProductoDTO>
   fun getById(idProducto:Int):Producto
-  fun getBySector(idSector:Int): List<SectorDataDTO>
-  fun getByRepositor(idRepositor: Int): List<RepositorDataDTO>
+  fun getBySector(idSector:Int): List<ProductoDataDTO>
+  fun getByRepositor(idRepositor: Int): List<ProductoDataDTO>
+  fun getFullProductData(id: Int): ProductoFullDataDTO
   fun create(producto: Producto): Producto
   fun delete(idProducto: Int)
 }
@@ -59,7 +57,7 @@ class ProductoService : IProductoService{
   }
 
   @Throws(BusinessException::class)
-  override fun getBySector(idSector: Int): List<SectorDataDTO> {
+  override fun getBySector(idSector: Int): List<ProductoDataDTO> {
     try {
       return gondolaProductoRepository!!.getProductoBySector(idSector)
     } catch (e: Exception) {
@@ -68,9 +66,19 @@ class ProductoService : IProductoService{
   }
 
   @Throws(BusinessException::class)
-  override fun getByRepositor(idRepositor: Int): List<RepositorDataDTO> {
+  override fun getByRepositor(idRepositor: Int): List<ProductoDataDTO> {
     try {
       return gondolaProductoRepositorRepository!!.getProductoByRepositor(idRepositor)
+    } catch (e: Exception) {
+      throw BusinessException(e.message!!)
+    }
+  }
+
+  @Throws(BusinessException::class)
+  override fun getFullProductData(id: Int): ProductoFullDataDTO {
+    try {
+
+      return gondolaProductoRepositorRepository!!.getFullProductData(id)
     } catch (e: Exception) {
       throw BusinessException(e.message!!)
     }

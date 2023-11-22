@@ -1,23 +1,27 @@
 package ar.edu.unsam.model
-abstract class BaseDataDTO(
-  open val productoId: Int,
-  open val productoNombre: String,
-  open val gondolaNombre: String,
-  open val presentacionDesc: String
+
+import java.sql.Timestamp
+
+
+data class ProductoDataDTO(
+  val id: Int,
+  val id_producto: Int,
+  val producto: String,
+  val gondola: String,
+  val presentacion: String
 )
 
-data class RepositorDataDTO(
-  val repositorId: Int,
-  override val productoId: Int,
-  override val productoNombre: String,
-  override val gondolaNombre: String,
-  override val presentacionDesc: String
-) : BaseDataDTO(productoId, productoNombre, gondolaNombre, presentacionDesc)
-
-data class SectorDataDTO(
-  val sectorId: Int,
-  override val productoId: Int,
-  override val productoNombre: String,
-  override val gondolaNombre: String,
-  override val presentacionDesc: String
-) : BaseDataDTO(productoId, productoNombre, gondolaNombre, presentacionDesc)
+data class ProductoFullDataDTO(
+  val idgpr: Int,
+  val fecha: Timestamp,
+  val producto: String,
+  val descripcion: String,
+  val id_reemplazo: Int,
+  val presentacion: String,
+  val fila: String,
+  val gondola: String,
+  val sector: String,
+  val repositor: String,
+  val empresa: String,
+  val domicilio_empresa: String
+)

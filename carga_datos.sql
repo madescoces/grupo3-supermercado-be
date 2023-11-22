@@ -23,10 +23,11 @@ USE `supermercado`;
 DROP TABLE IF EXISTS `supermercado`.`empresa`;
 
 CREATE TABLE IF NOT EXISTS `supermercado`.`empresa` (
-  `id_empresa` INT NOT NULL,
+  `id_empresa` INT NOT NULL AUTO_INCREMENT,
   `razon_social` VARCHAR(80) NOT NULL,
   `domicilio` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id_empresa`))
+  PRIMARY KEY (`id_empresa`),
+  UNIQUE INDEX `id_empresa_UNIQUE` (`id_empresa` ASC) VISIBLE)  
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -59,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `supermercado`.`repositor` (
   `id_empresa` INT NOT NULL,
   PRIMARY KEY (`id_repositor`),
   INDEX `fk_repositor_empresa_idx` (`id_empresa` ASC) VISIBLE,
+  UNIQUE INDEX `id_repositor_UNIQUE` (`id_repositor` ASC) VISIBLE,
   CONSTRAINT `fk_repositor_empresa`
     FOREIGN KEY (`id_empresa`)
     REFERENCES `supermercado`.`empresa` (`id_empresa`)
@@ -103,7 +105,8 @@ DROP TABLE IF EXISTS `supermercado`.`sector`;
 CREATE TABLE IF NOT EXISTS `supermercado`.`sector` (
   `id_sector` INT NOT NULL,
   `desc_sector` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id_sector`))
+  PRIMARY KEY (`id_sector`),
+  UNIQUE INDEX `id_sector_UNIQUE` (`id_sector` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -138,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `supermercado`.`gondola` (
   `id_sector` INT NOT NULL,
   PRIMARY KEY (`id_gondola`),
   INDEX `fk_gondola_sector_idx` (`id_sector` ASC) VISIBLE,
+  UNIQUE INDEX `id_gondola_UNIQUE` (`id_gondola` ASC) VISIBLE,
   CONSTRAINT `fk_gondola_sector`
     FOREIGN KEY (`id_sector`)
     REFERENCES `supermercado`.`sector` (`id_sector`)
@@ -185,7 +189,8 @@ DROP TABLE IF EXISTS `supermercado`.`fila_producto`;
 CREATE TABLE IF NOT EXISTS `supermercado`.`fila_producto` (
   `id_fila` INT NOT NULL AUTO_INCREMENT,
   `desc_fila` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id_fila`))
+  PRIMARY KEY (`id_fila`),
+  UNIQUE INDEX `id_fila_UNIQUE` (`id_fila` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -208,7 +213,7 @@ ON DUPLICATE KEY UPDATE
 DROP TABLE IF EXISTS `supermercado`.`producto`;
 
 CREATE TABLE IF NOT EXISTS `supermercado`.`producto` (
-  `id_producto` INT NOT NULL,
+  `id_producto` INT NOT NULL AUTO_INCREMENT,
   `nombre_producto` VARCHAR(80) NOT NULL,
   `desc_producto` VARCHAR(80) NULL,
   `id_fila` INT NULL,
@@ -216,6 +221,7 @@ CREATE TABLE IF NOT EXISTS `supermercado`.`producto` (
   PRIMARY KEY (`id_producto`),
   INDEX `fk_producto_fila_producto_idx` (`id_fila` ASC) VISIBLE,
   INDEX `fk_producto_producto_idx` (`id_producto_reemplazo` ASC) VISIBLE,
+  UNIQUE INDEX `id_producto_UNIQUE` (`id_producto` ASC) VISIBLE,
   CONSTRAINT `fk_producto_fila_producto`
     FOREIGN KEY (`id_fila`)
     REFERENCES `supermercado`.`fila_producto` (`id_fila`)
@@ -266,7 +272,8 @@ DROP TABLE IF EXISTS `supermercado`.`presentacion`;
 CREATE TABLE IF NOT EXISTS `supermercado`.`presentacion` (
   `id_presentacion` INT NOT NULL AUTO_INCREMENT,
   `desc_presentacion` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id_presentacion`))
+  PRIMARY KEY (`id_presentacion`),
+  UNIQUE INDEX `id_presentacion_UNIQUE` (`id_presentacion` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -352,6 +359,7 @@ ON DUPLICATE KEY UPDATE
 DROP TABLE IF EXISTS `supermercado`.`gondola_producto_repositor`;
 
 CREATE TABLE IF NOT EXISTS `supermercado`.`gondola_producto_repositor` (
+  `id_gpr` INT NOT NULL AUTO_INCREMENT,
   `id_gondola` INT NOT NULL,
   `id_producto` INT NOT NULL,
   `id_repositor` INT NOT NULL,
@@ -360,6 +368,7 @@ CREATE TABLE IF NOT EXISTS `supermercado`.`gondola_producto_repositor` (
   PRIMARY KEY (`id_gondola`, `id_producto`, `id_repositor`, `fecha`),
   INDEX `fk_gondola_producto_repositor_repositor_idx` (`id_repositor` ASC) VISIBLE,
   INDEX `fk_gondola_producto_repositor_gondola_producto_idx` (`id_gondola` ASC, `id_producto` ASC) VISIBLE,
+  UNIQUE INDEX `id_gpr_UNIQUE` (`id_gpr` ASC) VISIBLE,
   CONSTRAINT `fk_gondola_producto_repositor_repositor`
     FOREIGN KEY (`id_repositor`)
     REFERENCES `supermercado`.`repositor` (`id_repositor`)
@@ -377,6 +386,7 @@ ENGINE = InnoDB;
 -- ----------------------------------------------------------------
 INSERT INTO `supermercado`.`gondola_producto_repositor` ( id_gondola, id_producto, id_repositor, fecha, cantidad) VALUES 
 (11,1,1,'2023-11-11 09:45:00',12),
+(11,1,1,'2023-11-11 09:55:00',21),
 (11,2,2,'2023-11-21 17:22:00',31),
 (1,3,3,'2023-03-10 14:37:00',13),
 (13,4,4,'2023-10-11 11:05:00',3),
@@ -411,7 +421,7 @@ INSERT INTO `supermercado`.`gondola_producto_repositor` ( id_gondola, id_product
 (22,14,5,'2023-11-17 09:12:00',23),
 (23,15,3,'2023-10-05 12:44:00',2),
 (18,16,18,'2023-10-05 12:44:00',12),
-(9,17,5,'2023-11-17 08:43:00',22),
+(9,17,19,'2023-11-17 08:43:00',22),
 (13,18,7,'2023-11-11 09:01:00',3) AS new_gondola_producto_repositor
 ON DUPLICATE KEY UPDATE
   id_producto = new_gondola_producto_repositor.id_producto,

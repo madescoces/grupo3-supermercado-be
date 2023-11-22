@@ -34,13 +34,13 @@ data class GondolaProducto(
   @OneToMany(mappedBy = "gondolaProducto") // Corregir el nombre del atributo
   val gondolaProductoRepositor: List<GondolaProductoRepositor> = listOf()
 ) {
-  fun toDTO() = SectorDataDTO(
-    sectorId = gondola.sector.idSector,
-    productoId = producto.idProducto,
-    productoNombre = producto.nombreProducto,
-    gondolaNombre = gondola.nombreGondola,
-    presentacionDesc = presentacion.descPresentacion,
-  )
+  /*fun toDTO() = SectorDataDTO(
+    id_sector = gondola.sector.idSector,
+    id_producto = producto.idProducto,
+    producto = producto.nombreProducto,
+    gondola = gondola.nombreGondola,
+    presentacion = presentacion.descPresentacion,
+  )*/
 }
 
 data class GondolaProductoId(

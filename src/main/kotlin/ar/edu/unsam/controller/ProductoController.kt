@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.sql.Timestamp
 
 @RestController
 @CrossOrigin("*")
@@ -43,7 +44,7 @@ class ProductoController {
 
   @GetMapping("/sector/{idSector}")
   @Operation(summary = "Trae todos los productos que correspondan a un sector")
-  fun getBySector(@PathVariable("idSector") idSector:Int = 0): ResponseEntity<List<SectorDataDTO>>{
+  fun getBySector(@PathVariable("idSector") idSector:Int = 0): ResponseEntity<List<ProductoDataDTO>>{
     return try{
       ResponseEntity(productoService!!.getBySector(idSector), HttpStatus.OK)
     } catch (e:Exception){
@@ -52,9 +53,21 @@ class ProductoController {
     }
   }
 
+  @GetMapping("/producto-full/{idGpr}")
+  @Operation(summary = "Trae un producto dada una fecha")
+  fun getFullProductData(@PathVariable("idGpr") idGpr: Int): ResponseEntity<ProductoFullDataDTO>{
+    return try{
+      ResponseEntity(productoService!!.getFullProductData(idGpr), HttpStatus.OK)
+    } catch (e:Exception){
+      e.printStackTrace()
+      ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+
   @GetMapping("/repositor/{idRepositor}")
   @Operation(summary = "Trae todos los productos que correspondan a un repositor")
-  fun getByRepositor(@PathVariable("idRepositor") idRepositor:Int): ResponseEntity<List<RepositorDataDTO>>{
+  fun getByRepositor(@PathVariable("idRepositor") idRepositor:Int): ResponseEntity<List<ProductoDataDTO>>{
     return try{
       ResponseEntity(productoService!!.getByRepositor(idRepositor), HttpStatus.OK)
     } catch (e:Exception){

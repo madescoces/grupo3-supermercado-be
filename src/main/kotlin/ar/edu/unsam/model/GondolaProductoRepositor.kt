@@ -8,6 +8,9 @@ import java.sql.Timestamp
 @Entity
 @Table(name = "gondola_producto_repositor")
 data class GondolaProductoRepositor(
+  @Column(name = "id_gpr", insertable = false, updatable = false)
+  val idGpr: Int,
+
   @EmbeddedId
   val id: GondolaProductoRepositorId,
 
@@ -26,15 +29,7 @@ data class GondolaProductoRepositor(
   val fecha: Timestamp,
 
   val cantidad: BigDecimal
-) {
-  fun toDTO() = RepositorDataDTO(
-    repositorId = repositor.idRepositor,
-    productoId = gondolaProducto.producto.idProducto,
-    productoNombre = gondolaProducto.producto.nombreProducto,
-    gondolaNombre = gondolaProducto.gondola.nombreGondola,
-    presentacionDesc = gondolaProducto.presentacion.descPresentacion,
-  )
-}
+)
 
 @Embeddable
 data class GondolaProductoRepositorId(

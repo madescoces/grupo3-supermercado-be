@@ -2,6 +2,7 @@ package ar.edu.unsam.model
 
 import jakarta.persistence.*
 
+
 @Entity
 @Table(name = "repositor")
 data class Repositor(
